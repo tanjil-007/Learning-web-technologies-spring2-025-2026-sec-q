@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form</title>
+</head>
+<body>
+
+<h2>Form</h2>
+
+<form onsubmit="return validateAll()">
+
+<!-- 1. Name -->
+<h3>1. Name</h3>
+<input type="text" id="name"><br><br>
+
+<!-- 2. Email -->
+<h3>2. Email</h3>
+<input type="text" id="email"><br><br>
+
+<!-- 3. Gender -->
+<h3>3. Gender</h3>
+<input type="radio" name="gender"> Male
+<input type="radio" name="gender"> Female
+<input type="radio" name="gender"> Other<br><br>
+
+<!-- 4. Date of Birth -->
+<h3>4. Date of Birth</h3>
+DD: <input type="number" id="dd">
+MM: <input type="number" id="mm">
+YYYY: <input type="number" id="yy"><br><br>
+
+<!-- 5. Degree -->
+<h3>5. Degree</h3>
+<input type="checkbox" name="degree"> SSC
+<input type="checkbox" name="degree"> HSC
+<input type="checkbox" name="degree"> BSc<br><br>
+
+<!-- 6. Blood Group -->
+<h3>6. Blood Group</h3>
+<select id="blood">
+    <option value="">Select</option>
+    <option>A+</option>
+    <option>B+</option>
+    <option>O+</option>
+    <option>AB+</option>
+</select><br><br>
+
+<!-- 7. User ID & Picture -->
+<h3>7. User ID & Picture</h3>
+User ID: <input type="number" id="uid"><br><br>
+Picture: <input type="file" id="pic"><br><br>
+
+<input type="submit" value="Submit All">
+
+</form>
+
+<script>
+function validateAll() {
+
+    /* 1. Name */
+    let name = document.getElementById("name").value;
+    if (name === "") {
+        alert("Name cannot be empty");
+        return false;
+    }
+    let words = name.trim().split(" ");
+    if (words.length < 2) {
+        alert("Name must contain at least two words");
+        return false;
+    }
+    let namePattern = /^[A-Za-z][A-Za-z.\- ]*$/;
+    if (!namePattern.test(name)) {
+        alert("Invalid name format");
+        return false;
+    }
+
+    /* 2. Email */
+    let email = document.getElementById("email").value;
+    if (email === "") {
+        alert("Email cannot be empty");
+        return false;
+    }
+    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
+    if (!emailPattern.test(email)) {
+        alert("Invalid email");
+        return false;
+    }
+
+    /* 3. Gender */
+    let genders = document.getElementsByName("gender");
+    let genderSelected = false;
+    for (let i = 0; i < genders.length; i++) {
+        if (genders[i].checked) {
+            genderSelected = true;
+        }
+    }
+    if (!genderSelected) {
+        alert("Select at least one gender");
+        return false;
+    }
+
+    /* 4. Date of Birth */
+    let dd = document.getElementById("dd").value;
+    let mm = document.getElementById("mm").value;
+    let yy = document.getElementById("yy").value;
+    if (dd === "" || mm === "" || yy === "") {
+        alert("Date of birth cannot be empty");
+        return false;
+    }
+    if (dd < 1 || dd > 31 || mm < 1 || mm > 12 || yy < 1900 || yy > 2016) {
+        alert("Invalid date of birth");
+        return false;
+    }
+
+    /* 5. Degree */
+    let degree = document.getElementsByName("degree");
+    let degreeSelected = false;
+    for (let i = 0; i < degree.length; i++) {
+        if (degree[i].checked) {
+            degreeSelected = true;
+        }
+    }
+    if (!degreeSelected) {
+        alert("Select at least one degree");
+        return false;
+    }
+
+    /* 6. Blood Group */
+    let blood = document.getElementById("blood").value;
+    if (blood === "") {
+        alert("Select blood group");
+        return false;
+    }
+
+    /* 7. User ID & Picture */
+    let uid = document.getElementById("uid").value;
+    let pic = document.getElementById("pic").value;
+    if (uid === "" || uid <= 0) {
+        alert("User ID must be a positive number");
+        return false;
+    }
+    if (pic === "") {
+        alert("Picture cannot be empty");
+        return false;
+    }
+
+    alert("All validations passed successfully!");
+    return true;
+}
+</script>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v67327c56f0bb4ef8b305cae61679db8f1769101564043" integrity="sha512-rdcWY47ByXd76cbCFzznIcEaCN71jqkWBBqlwhF1SY7KubdLKZiEGeP7AyieKZlGP9hbY/MhGrwXzJC/HulNyg==" data-cf-beacon='{"version":"2024.11.0","token":"d61ace1a7a5c47e3831d343de077b36a","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
