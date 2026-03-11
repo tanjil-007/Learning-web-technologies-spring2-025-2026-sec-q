@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tic-Tac-Toe</title>
+</head>
+<body>
+
+
+  <p>Score - X: <span id="scoreX">0</span> | O: <span id="scoreO">0</span></p>
+
+  <p id="status">Player X's turn</p>
+
+  <table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+      <td><button id="c0" onclick="handleClick(0)" style="width:80px;height:80px;font-size:2rem;"></button></td>
+      <td><button id="c1" onclick="handleClick(1)" style="width:80px;height:80px;font-size:2rem;"></button></td>
+      <td><button id="c2" onclick="handleClick(2)" style="width:80px;height:80px;font-size:2rem;"></button></td>
+    </tr>
+    <tr>
+      <td><button id="c3" onclick="handleClick(3)" style="width:80px;height:80px;font-size:2rem;"></button></td>
+      <td><button id="c4" onclick="handleClick(4)" style="width:80px;height:80px;font-size:2rem;"></button></td>
+      <td><button id="c5" onclick="handleClick(5)" style="width:80px;height:80px;font-size:2rem;"></button></td>
+    </tr>
+    <tr>
+      <td><button id="c6" onclick="handleClick(6)" style="width:80px;height:80px;font-size:2rem;"></button></td>
+      <td><button id="c7" onclick="handleClick(7)" style="width:80px;height:80px;font-size:2rem;"></button></td>
+      <td><button id="c8" onclick="handleClick(8)" style="width:80px;height:80px;font-size:2rem;"></button></td>
+    </tr>
+  </table>
+
+  <br>
+  <button onclick="resetGame()">Reset</button>
+
+  <script>
+    var board = ['', '', '', '', '', '', '', '', ''];
+    var currentPlayer = 'X';
+    var gameOver = false;
+    var scoreX = 0;
+    var scoreO = 0;
+
+    var winCombos = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+
+    function handleClick(index) {
+      if (board[index] !== '' || gameOver) return;
+
+      board[index] = currentPlayer;
+      document.getElementById('c' + index).textContent = currentPlayer;
+
+      var winResult = checkWin();
+      if (winResult !== null) {
+        for (var i = 0; i < winResult.length; i++) {
+          document.getElementById('c' + winResult[i]).style.backgroundColor = 'yellow';
+        }
+        document.getElementById('status').textContent = 'Player ' + currentPlayer + ' wins!';
+        gameOver = true;
+
+        if (currentPlayer === 'X') {
+          scoreX++;
+          document.getElementById('scoreX').textContent = scoreX;
+        } else {
+          scoreO++;
+          document.getElementById('scoreO').textContent = scoreO;
+        }
+        return;
+      }
+
+      if (checkDraw()) {
+        document.getElementById('status').textContent = "It's a draw!";
+        gameOver = true;
+        return;
+      }
+
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      document.getElementById('status').textContent = "Player " + currentPlayer + "'s turn";
+    }
+
+    function checkWin() {
+      for (var i = 0; i < winCombos.length; i++) {
+        var a = winCombos[i][0];
+        var b = winCombos[i][1];
+        var c = winCombos[i][2];
+        if (board[a] !== '' && board[a] === board[b] && board[b] === board[c]) {
+          return winCombos[i];
+        }
+      }
+      return null;
+    }
+
+    function checkDraw() {
+      for (var i = 0; i < board.length; i++) {
+        if (board[i] === '') return false;
+      }
+      return true;
+    }
+
+    function resetGame() {
+      board = ['', '', '', '', '', '', '', '', ''];
+      currentPlayer = 'X';
+      gameOver = false;
+      document.getElementById('status').textContent = "Player X's turn";
+
+      for (var i = 0; i < 9; i++) {
+        var cell = document.getElementById('c' + i);
+        cell.textContent = '';
+        cell.style.backgroundColor = '';
+      }
+    }
+  </script>
+
+</body>
+</html>
